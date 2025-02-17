@@ -6,6 +6,6 @@
     <title>Document</title>
 </head>
 <body>
-    E-Commerce
+    INDEX
 </body>
 </html>
