@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Login'])) {
     $db = $database->getConnection();
     
     $username = htmlspecialchars($_POST['Username']);
-    $password = password_hash($_POST['Password'], PASSWORD_BCRYPT);
+    $password = $_POST['Password'];
     
     // Vérifier les identifiants
     $stmt = $db->prepare("SELECT Id, Username, Password, Role FROM user WHERE Username = ?");
@@ -44,6 +44,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Login'])) {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     print_r($user);
     echo $password;
+    echo $user['Password'];
+
+    var_dump(password_verify($password, $user['Password']));
     
     if ($user && password_verify($password, $user['Password'])) {
         // Connexion réussie, créer la session
