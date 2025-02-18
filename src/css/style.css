@@ -111,3 +111,18 @@ a {
 a {
     background-color: red;
 }
+
+.article {
+    background-color: black;  /* Fond noir */
+    color: white;  /* Texte en blanc pour contraster */
+    padding: 20px;  /* Ajoute un espace intérieur pour l'esthétique */
+    margin: 10px 0;  /* Ajoute un espace entre chaque article */
+    border-radius: 10px;  /* Arrondit légèrement les bords */
+    width: 80%;  /* Réduit la largeur pour éviter un affichage trop large */
+    max-width: 200px;  /* Limite la taille max pour un bon affichage */
+    text-align: center;  /* Centre le texte */
+}
+.article img {
+    width: 100%;  /* Image prend toute la largeur du bloc */
+    border-radius: 5px;  /* Arrondit légèrement l'image */
+}
