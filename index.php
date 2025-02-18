@@ -21,7 +21,6 @@ $stmt->execute();
     <link rel="stylesheet" href="src/css/style.css">
 </head>
 <body>
-
     <nav>
         <div class="title">
             <h1>PHONE</h1>
@@ -52,6 +51,5 @@ $stmt->execute();
         }
         ?>
     </div>
-
 </body>
 </html>
