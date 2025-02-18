@@ -2,6 +2,7 @@
 require_once 'config/database.php';
 require_once 'functions.php';
 
+session_start();
 $error = "test";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Register'])) {

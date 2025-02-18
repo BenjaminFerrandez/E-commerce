@@ -1,3 +1,9 @@
+<?php
+
+    $_SESSION["Cart"] = array();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
