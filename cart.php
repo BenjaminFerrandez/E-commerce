@@ -87,14 +87,13 @@ $stmt->execute();
                     $stockRequest = $db->prepare($query);
                     $stockRequest->execute([$article['id']]);
                     $stock = $stockRequest->fetch(PDO::FETCH_ASSOC);
-                    echo $stock["quantite"];
                     echo "<div class='article'>";
                     echo "<h2>" . htmlspecialchars($article['nom']) . "</h2>";
                     //echo "<p>" . htmlspecialchars($article['description']) . "</p>";
                     echo "<img src='" . htmlspecialchars($article['image_url']) . "' alt='" . htmlspecialchars($article['nom']) . "'>";
                     echo "<p>Prix : " . htmlspecialchars($article['prix']) . " €</p>";
                     //echo "<p>Publié le : " . htmlspecialchars($article['date_publication']) . "</p>";
-                    echo "<a href='product.php?id=" . $article['id'] . "'>Voir l'article</a>";
+                    echo "<a href='product.php?slug=" . $article['slug'] . "'>Voir l'article</a>";
                     echo "<p>Stock : " . $stock["quantite"] . "</p>";
                     echo "</div>";
                 }
