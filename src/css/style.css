@@ -142,6 +142,7 @@ a {
     margin: 10px 0;  /* Ajoute un espace entre chaque article */
     border-radius: 10px;  /* Arrondit légèrement les bords */
     width: 80%;  /* Réduit la largeur pour éviter un affichage trop large */
+    min-width: 200px;
     max-width: 200px;  /* Limite la taille max pour un bon affichage */
     text-align: center;  /* Centre le texte */
 }
@@ -151,11 +152,41 @@ a {
     max-height: 200px;
 }
 
+.cartArticle {
+    background-color: black;  /* Fond noir */
+    color: white;  /* Texte en blanc pour contraster */
+    padding: 20px;  /* Ajoute un espace intérieur pour l'esthétique */
+    margin: 10px 0;  /* Ajoute un espace entre chaque article */
+    border-radius: 10px;  /* Arrondit légèrement les bords */
+    min-width: 500px;
+    max-width: 500px;  /* Limite la taille max pour un bon affichage */
+    height: 160px;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.cartArticlePicture {
+    height: 150px;
+    width: 150px;
+    background-color: red;
+}
+
+.cartArticleDesc {
+    
+}
 
 
+.cartLanding {
+    display: flex;
+    justify-content: center;
+}
 
 
 .wrap {
     width: auto;
     background-color: #969696;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
