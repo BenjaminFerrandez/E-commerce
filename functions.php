@@ -19,3 +19,41 @@ function redirectIfNotLoggedIn() {
         exit();
     }
 }
+
+function addToCart($articleId) {
+    // Vérifier si l'utilisateur est connecté
+    if (!isset($_SESSION['id'])) {
+        echo "aaa";
+        //header('Location: index.php');
+        exit();
+    }
+    $database = new Database();
+    $db = $database->getConnection();
+
+    $stmt = $db->prepare("INSERT INTO cart (user_id, article_id) VALUES (?, ?)");
+    $stmt->execute([$_SESSION["id"], $articleId]);
+
+    header('Location: /E-commerce/cart.php');
+    exit();
+
+
+    
+
+    // if (!isset($_SESSION["Cart"])) {
+    //     $_SESSION["Cart"] = [];
+    // }
+
+    // if ($stmt->rowCount() > 0) {
+    //     while ($article = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            
+    //     }
+    // }
+
+    // // if (!in_array($article, $_SESSION["Cart"])) {
+    // //     $_SESSION["Cart"][$article] = ;
+    // // }
+
+    // var_dump($_SESSION["Cart"]);
+
+    echo "Article ajouté au panier !";
+}

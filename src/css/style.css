@@ -88,17 +88,40 @@ a {
 }
 
 
+.userLog {
+    width: auto;
+    height: 75%;
+    border-radius: 4px;
+    background-color: #E3E3E3;
+    margin-right: 1vw;
+    display: flex;
+    padding-right: 10px;
+    padding-left: 10px;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.profilPic {
+    width: 28px;
+    height: 28px;
+    background-color: #181818;
+    border-radius: 40px;
+}
+
 .user {
     width: auto;
     height: 65%;
-    border-radius: 100px;
-    background-color: #E3E3E3;
     margin-right: 1vw;
     display: flex;
     padding-right: 1vw;
     padding-left: 1vw;
     align-items: center;
     justify-content: center;
+}
+
+.user p {
+    color: #E3E3E3;
 }
 
 
@@ -125,6 +148,7 @@ a {
 .article img {
     width: 100%;  /* Image prend toute la largeur du bloc */
     border-radius: 5px;  /* Arrondit légèrement l'image */
+    max-height: 200px;
 }
 
 
