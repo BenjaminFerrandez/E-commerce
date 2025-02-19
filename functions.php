@@ -35,25 +35,5 @@ function addToCart($articleId) {
 
     header('Location: /E-commerce/cart.php');
     exit();
-
-
-    
-
-    // if (!isset($_SESSION["Cart"])) {
-    //     $_SESSION["Cart"] = [];
-    // }
-
-    // if ($stmt->rowCount() > 0) {
-    //     while ($article = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            
-    //     }
-    // }
-
-    // // if (!in_array($article, $_SESSION["Cart"])) {
-    // //     $_SESSION["Cart"][$article] = ;
-    // // }
-
-    // var_dump($_SESSION["Cart"]);
-
     echo "Article ajouté au panier !";
 }
