@@ -43,7 +43,7 @@ $stmt->execute();
                 echo "<img src='" . htmlspecialchars($article['image_url']) . "' alt='" . htmlspecialchars($article['nom']) . "' width='200'>";
                 echo "<p>Prix : " . htmlspecialchars($article['prix']) . " €</p>";
                 //echo "<p>Publié le : " . htmlspecialchars($article['date_publication']) . "</p>";
-                echo "<a href='product.php?id=" . $article['id'] . "'>Voir l'article</a>";
+                echo "<a href='product.php?slug=" . $article['slug'] . "'>Voir l'article</a>";
                 echo "</div>";
             }
         } else {

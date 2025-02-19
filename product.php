@@ -3,21 +3,21 @@
 require_once "config/database.php";
 
 // Vérifier si un ID d'article est passé en paramètre GET
-if (!isset($_GET['id']) || empty($_GET['id'])) {
+if (!isset($_GET['slug']) || empty($_GET['slug'])) {
     die("Erreur : Aucun article sélectionné.");
 }
 
 // Récupérer l'ID de l'article depuis l'URL
-$article_id = intval($_GET['id']); // Sécurisation contre les injections SQL
+$article_slug = ($_GET['slug']); // Sécurisation contre les injections SQL
 
 // Connexion à la base de données
 $database = new Database();
 $db = $database->getConnection();
 
 // Préparer et exécuter la requête pour récupérer les détails de l'article
-$query = "SELECT * FROM article WHERE id = :id";
+$query = "SELECT article.*, user.username FROM article INNER JOIN user ON article.user_id = user.id WHERE article.slug = :slug";
 $stmt = $db->prepare($query);
-$stmt->bindParam(':id', $article_id, PDO::PARAM_INT);
+$stmt->bindParam(':slug', $article_slug, PDO::PARAM_STR);
 $stmt->execute();
 
 // Vérifier si l'article existe
@@ -43,6 +43,7 @@ $article = $stmt->fetch(PDO::FETCH_ASSOC);
     <img src="<?= htmlspecialchars($article['image_url']) ?>" alt="<?= htmlspecialchars($article['nom']) ?>" width="300">
     <p><strong>Description :</strong> <?= htmlspecialchars($article['description']) ?></p>
     <p><strong>Publié le :</strong> <?= htmlspecialchars($article['date_publication']) ?></p>
+    <p><strong>Par :</strong> <?= htmlspecialchars($article['username']) ?></p>
     <p><strong>Prix :</strong> <?= htmlspecialchars($article['prix'])?> €</p>
 
     <a href="index.php">Retour à l'accueil</a>
