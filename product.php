@@ -43,7 +43,11 @@ $article = $stmt->fetch(PDO::FETCH_ASSOC);
     <img src="<?= htmlspecialchars($article['image_url']) ?>" alt="<?= htmlspecialchars($article['nom']) ?>" width="300">
     <p><strong>Description :</strong> <?= htmlspecialchars($article['description']) ?></p>
     <p><strong>Publié le :</strong> <?= htmlspecialchars($article['date_publication']) ?></p>
-    <p><strong>Par :</strong> <?= htmlspecialchars($article['username']) ?></p>
+    <p><strong>Par :</strong> 
+        <a href="profil.php?username=<?= urlencode($article['username']) ?>" class="btn-profil">
+            <?= htmlspecialchars($article['username']) ?>
+        </a>
+    </p>
     <p><strong>Prix :</strong> <?= htmlspecialchars($article['prix'])?> €</p>
     <a href="index.php">Retour à l'accueil</a>
 </body>

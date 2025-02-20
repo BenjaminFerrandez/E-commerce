@@ -54,28 +54,12 @@ $request_user->execute();
         </div>
 
         <div class="CTANav">
-
             <ul>
                 <li><a href="create_product.php">Creer un article</a></li>
                 <li><a href="">Wishlist</a></li>
                 <li><a href="cart.php">Panier</a></li>
             </ul>
 
-                <?php
-                    $user = $request_user->fetch(PDO::FETCH_ASSOC);
-                    echo "<a href='profil.php?username=" . $user['username'] . "'>";
-                        if (isset($_SESSION['id'])) {
-                            echo "<div class='userLog'>";
-                            echo "<div class='profilPic'></div>";
-                            echo "<p>" . $_SESSION['username'] . "</p>";
-                            echo "</div>";
-                        } else {
-                            echo "<div class='user'>";
-                            echo "<p>LOGIN</p>";
-                            echo "</div>";
-                        }
-                    echo "</a>";
-                ?>
             <?php
                 if (isset($_SESSION['id'])) {
                     echo "<div class='userLog'>";
@@ -84,7 +68,7 @@ $request_user->execute();
                     echo "<div class='userMenuHitbox'>";
                     echo "<div class='userMenu'>";
                     echo "<ul>";
-                    echo "<li><a href='profil.php?username=" . $user['username'] . "'>Mon profil</a></li>";
+                    echo "<li><a href='profil.php?username=" . $_SESSION['username'] . "'>Mon profil</a></li>";
                     echo "<li><a href='commandes.php'>Mes Commandes</a></li>";
                     echo "<li><a href=''>Déconnexion</a></li>";
                     echo "</ul>";
@@ -142,7 +126,8 @@ $request_user->execute();
                     echo "</form>";
                 }
                 
-                echo "<a href='product.php?slug=" . $article['slug'] . "'>Voir l'article</a>";
+                echo "<a href='product.php?slug=" . $article["slug"] . "'>Voir l'article</a>";
+                echo "</div>";
                 echo "</div>";
                 echo "</div>";
             }

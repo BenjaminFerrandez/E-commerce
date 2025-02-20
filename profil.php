@@ -10,14 +10,21 @@ if (!isset($_GET['username']) || empty($_GET['username'])) {
 }
 
 // Récupérer l'username depuis l'URL
-$user_username = $_GET['username']; // Sécurisation contre les injections SQL
+$user_username = $_GET['username'];
 
 // Connexion à la base de données
 $database = new Database();
 $db = $database->getConnection();
 
-// Requête pour récupérer les infos du user + articles publiés
-$query = "SELECT * FROM user INNER JOIN article ON user.id = article.user_id WHERE user.username = :username";
+// Requête SQL corrigée avec LEFT JOIN
+$query = "SELECT user.id, user.username, user.solde,
+           article.id AS article_id, article.nom AS article_nom, article.slug, 
+           article.description, article.date_publication, article.image_url
+    FROM user
+    LEFT JOIN article ON user.id = article.user_id
+    WHERE user.username = :username
+";
+
 $stmt = $db->prepare($query);
 $stmt->execute([':username' => $user_username]);
 
@@ -35,19 +42,19 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $user_data = [
             'id' => $row['id'],
             'username' => $row['username'],
-            //'email' => $row['email'],
             'solde' => $row['solde']
         ];
     }
 
-    // Si l'utilisateur a publié des articles, on les ajoute à la liste
-    if (empty($row['article_id'])) {
+    // Ajouter les articles s'ils existent
+    if (!empty($row['article_id'])) {
         $articles[] = [
-            //'id' => $row['article_id'],
-            'nom' => $row['nom'],
+            'id' => $row['article_id'],
+            'nom' => $row['article_nom'],
+            'slug' => $row['slug'],
+            'image_url' => $row['image_url'],
             'description' => $row['description'],
-            'date_publication' => $row['date_publication'],
-            'lien_image' => $row['image_url']
+            'date_publication' => $row['date_publication']
         ];
     }
 }
@@ -65,7 +72,9 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
     <h1>Profil de <?= htmlspecialchars($user_data['username']) ?></h1>
     
+    <?php if ($_SESSION['username'] == $user_data['username']) : ?>
     <p><strong>Solde :</strong> <?= htmlspecialchars($user_data['solde']) ?> €</p>
+    <?php endif; ?>
 
     <h2>Articles publiés :</h2>
     <?php if (empty($articles)) : ?>
@@ -75,22 +84,15 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             <?php foreach ($articles as $article) : ?>
                 <div class="article">
                     <h3><?= htmlspecialchars($article['nom']) ?></h3>
-                    <img src="<?= htmlspecialchars($article['lien_image']) ?>" alt="<?= htmlspecialchars($article['nom']) ?>" width="200">
+                    <?php echo "<img src='" . htmlspecialchars($article['image_url']) . "' alt='" . htmlspecialchars($article['nom']) . "' width='200'>"?>
                     <p><?= htmlspecialchars($article['description']) ?></p>
                     <p><strong>Publié le :</strong> <?= htmlspecialchars($article['date_publication']) ?></p>
-                    <?php 
-                        if ($stmt->rowCount() > 0) {
-                            while ($article = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                echo "<a href='product.php?slug=" . $article['slug'] . "'>Voir l'article</a>";
-                            }
-                        } else {
-                            echo "<p>Aucun article en vente pour le moment.</p>";
-                        }  
-                        ?>
+                    <a href="product.php?slug=<?= htmlspecialchars($article['slug']) ?>">Voir l'article</a>
                 </div>
             <?php endforeach; ?>
         </div>
     <?php endif; ?>
+
     <a href="index.php">Retour à l'accueil</a>
 </body>
 </html>
