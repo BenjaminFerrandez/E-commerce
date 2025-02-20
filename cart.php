@@ -17,7 +17,6 @@ $userId = $_SESSION['id'];
 
 
 // Join user et cart
-
 $query = "SELECT * FROM user INNER JOIN cart ON user.id = cart.user_id WHERE cart.user_id = ?";
 $userRequest = $db->prepare($query);
 $userRequest->execute([$userId]);
@@ -26,22 +25,16 @@ $user = $userRequest->fetch(PDO::FETCH_ASSOC);
 
 
 // Join article cart
-
 $query = "SELECT * FROM article INNER JOIN cart ON article.id = cart.article_id WHERE cart.user_id = ?";
 $articleRequest = $db->prepare($query);
 $articleRequest->execute([$userId]);
 
-
 // Join stock article
-
 $query = "SELECT * FROM stock INNER JOIN article ON stock.article_id = article.id WHERE article.id = ?";
 $stockRequest = $db->prepare($query);
 $stockRequest->execute([$userId]);
 
-
-
 // Solde user
-
 $stmt = $db->prepare("SELECT solde FROM user WHERE username = ?");
 $stmt->execute([$username]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -65,8 +58,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-?>
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['addItem'])) {
+        if ($_POST['article_stock'] > $_POST["article_quantity"]) {
+            addItem($_POST['article_id']);
+            header('Location: /E-commerce/cart.php');
+        } else {
+            echo "pas assez de stocks";
+        }
+        
+    } elseif (isset($_POST['removeItem'])) {
+        removeItem($_POST['article_id']);
+        header('Location: /E-commerce/cart.php');
+    }
+}
 
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
