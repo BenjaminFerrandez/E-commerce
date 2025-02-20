@@ -56,7 +56,7 @@ $request_user->execute();
         <div class="CTANav">
 
             <ul>
-                <li><a href="">Creer un article</a></li>
+                <li><a href="create_product.php">Creer un article</a></li>
                 <li><a href="">Wishlist</a></li>
                 <li><a href="cart.php">Panier</a></li>
             </ul>

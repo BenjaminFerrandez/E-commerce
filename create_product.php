@@ -1,10 +1,11 @@
 <?php 
 session_start();
-require_once '../config/database.php';
-require_once '../functions.php';
+require_once "config/database.php";
+require_once 'functions.php';
 
-if (!isAdmin()) {
-    header('Location: /index.php');
+
+if (!isset($_SESSION['id'])) {
+    header('Location: /E-commerce/login.php');
     exit();
 }
 
