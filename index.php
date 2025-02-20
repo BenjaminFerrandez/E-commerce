@@ -27,7 +27,7 @@ $database = new Database();
 $db = $database->getConnection();
 
 // Afficher les articles
-$query = "SELECT * FROM article ORDER BY date_publication DESC";
+$query = "SELECT * FROM article WHERE deleted = 0 ORDER BY date_publication DESC";
 $stmt = $db->prepare($query);
 $stmt->execute();
 
@@ -84,8 +84,9 @@ $request_user->execute();
                     echo "<div class='userMenuHitbox'>";
                     echo "<div class='userMenu'>";
                     echo "<ul>";
-                    echo "<li><a href='profile.php'>Mon Profil</a></li>";
-                    echo "<li><a href='profile.php'>Déconnexion</a></li>";
+                    echo "<li><a href='profil.php?username=" . $user['username'] . "'>Mon profil</a></li>";
+                    echo "<li><a href='commandes.php'>Mes Commandes</a></li>";
+                    echo "<li><a href=''>Déconnexion</a></li>";
                     echo "</ul>";
                     echo "</div>";
                     echo "</div>";
@@ -112,8 +113,11 @@ $request_user->execute();
         if ($stmt->rowCount() > 0) {
             while ($article = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 echo "<div class='article'>";
-                echo "<h2>" . htmlspecialchars($article['nom']) . "</h2>";
+                echo "<div class='articleImage'>";
                 echo "<img src='" . htmlspecialchars($article['image_url']) . "' alt='" . htmlspecialchars($article['nom']) . "' width='200'>";
+                echo "</div>";
+                echo "<div class='articleContent'>";
+                echo "<h2>" . htmlspecialchars($article['nom']) . "</h2>";
                 echo "<p>Prix : " . htmlspecialchars($article['prix']) . " €</p>";
 
                 $cartIds = array_column($cartItems, 'article_id');
@@ -137,6 +141,7 @@ $request_user->execute();
                 }
                 
                 echo "<a href='product.php?slug=" . $article['slug'] . "'>Voir l'article</a>";
+                echo "</div>";
                 echo "</div>";
             }
         } else {
