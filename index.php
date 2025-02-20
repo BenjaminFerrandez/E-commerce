@@ -10,6 +10,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addToCart'])) {
     }
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['addItem'])) {
+        addItem($_POST['article_id']);
+        header('Location: /E-commerce/index.php');
+        exit();
+    } elseif (isset($_POST['removeItem'])) {
+        removeItem($_POST['article_id']);
+        header('Location: /E-commerce/index.php');
+        exit();
+    }
+}
+
 // Connexion à la base de données
 $database = new Database();
 $db = $database->getConnection();
@@ -31,7 +43,7 @@ $stmt->execute();
 <body>
     <nav>
         <div class="title">
-            <h1>PHONE</h1>
+            <a href="index.php"><h1>PHONE</h1></a>
         </div>
         <div class="searchBar">
             <input type="search" name="search" id="search" placeholder="Search for article">
@@ -42,7 +54,7 @@ $stmt->execute();
             <ul>
                 <li><a href="">Creer un article</a></li>
                 <li><a href="">Wishlist</a></li>
-                <li><a href="">Panier</a></li>
+                <li><a href="cart.php">Panier</a></li>
             </ul>
 
             <?php
@@ -50,6 +62,14 @@ $stmt->execute();
                     echo "<div class='userLog'>";
                     echo "<div class='profilPic'></div>";
                     echo "<p>" . $_SESSION['username'] . "</p>";
+                    echo "<div class='userMenuHitbox'>";
+                    echo "<div class='userMenu'>";
+                    echo "<ul>";
+                    echo "<li><a href='profile.php'>Mon Profil</a></li>";
+                    echo "<li><a href='profile.php'>Déconnexion</a></li>";
+                    echo "</ul>";
+                    echo "</div>";
+                    echo "</div>";
                     echo "</div>";
                 } else {
                     echo "<div class='user'>";
@@ -66,19 +86,39 @@ $stmt->execute();
     <div class="articles">
         
         <?php
-        // Vérifier s'il y a des articles
+
+        $query = "SELECT article_id, quantite FROM cart WHERE user_id = ?";
+        $cartRequest = $db->prepare($query);
+        $cartRequest->execute([$_SESSION['id']]);
+        $cartItems = $cartRequest->fetchAll(PDO::FETCH_ASSOC);
+
         if ($stmt->rowCount() > 0) {
             while ($article = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 echo "<div class='article'>";
                 echo "<h2>" . htmlspecialchars($article['nom']) . "</h2>";
-                //echo "<p>" . htmlspecialchars($article['description']) . "</p>";
                 echo "<img src='" . htmlspecialchars($article['image_url']) . "' alt='" . htmlspecialchars($article['nom']) . "' width='200'>";
                 echo "<p>Prix : " . htmlspecialchars($article['prix']) . " €</p>";
-                //echo "<p>Publié le : " . htmlspecialchars($article['date_publication']) . "</p>";
-                echo "<form method='post'>";
-                echo "<input type='submit' name='addToCart' value='AddToCart'/>";
-                echo "<input type='hidden' name='article' value='" . $article["id"] . "'>";
-                echo "</form>";
+
+                $cartIds = array_column($cartItems, 'article_id');
+
+                if (in_array($article["id"], $cartIds)) {
+                    $articleIndex = array_search($article["id"], $cartIds);
+                    $articleQuantity = $cartItems[$articleIndex]['quantite'];
+
+                    echo "<form method='post'>";
+                    echo "<input type='hidden' name='article_id' value='" . $article["id"] . "'>";
+                    echo "<input type='submit' name='removeItem' value='-'/>";
+                    echo "<span>" . $articleQuantity . "</span>";
+                    echo "<input type='submit' name='addItem' value='+'/>";
+                    echo "</form>";
+
+                } else {
+                    echo "<form method='post'>";
+                    echo "<input type='submit' name='addToCart' value='AddToCart'/>";
+                    echo "<input type='hidden' name='article' value='" . $article["id"] . "'>";
+                    echo "</form>";
+                }
+                
                 echo "<a href='product.php?slug=" . $article['slug'] . "'>Voir l'article</a>";
                 echo "</div>";
             }
@@ -88,5 +128,6 @@ $stmt->execute();
         ?>
         
     </div>
+
 </body>
 </html>

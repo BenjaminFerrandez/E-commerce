@@ -33,27 +33,58 @@ function addToCart($articleId) {
     $stmt = $db->prepare("INSERT INTO cart (user_id, article_id) VALUES (?, ?)");
     $stmt->execute([$_SESSION["id"], $articleId]);
 
-    header('Location: /E-commerce/cart.php');
+    header('Location: /E-commerce/index.php');
     exit();
-
-
-    
-
-    // if (!isset($_SESSION["Cart"])) {
-    //     $_SESSION["Cart"] = [];
-    // }
-
-    // if ($stmt->rowCount() > 0) {
-    //     while ($article = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            
-    //     }
-    // }
-
-    // // if (!in_array($article, $_SESSION["Cart"])) {
-    // //     $_SESSION["Cart"][$article] = ;
-    // // }
-
-    // var_dump($_SESSION["Cart"]);
-
     echo "Article ajouté au panier !";
+}
+
+function addItem($articleId) {
+    if (!isset($_SESSION['id'])) {
+        header('Location: index.php');
+        exit();
+    }
+
+    $database = new Database();
+    $db = $database->getConnection();
+
+    // Vérifier si l'article est déjà dans le panier
+    $stmt = $db->prepare("SELECT quantite FROM cart WHERE user_id = ? AND article_id = ?");
+    $stmt->execute([$_SESSION['id'], $articleId]);
+    $article = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+    if ($article) {
+        $stmt = $db->prepare("UPDATE cart SET quantite = quantite + 1 WHERE user_id = ? AND article_id = ?");
+        $stmt->execute([$_SESSION['id'], $articleId]);
+    } else {
+        $stmt = $db->prepare("INSERT INTO cart (user_id, article_id, quantite) VALUES (?, ?, 1)");
+        $stmt->execute([$_SESSION['id'], $articleId]);
+    }
+}
+
+function removeItem($articleId) {
+    if (!isset($_SESSION['id'])) {
+        header('Location: index.php');
+        exit();
+    }
+
+    $database = new Database();
+    $db = $database->getConnection();
+
+    // Vérifier la quantité actuelle de l'article
+    $stmt = $db->prepare("SELECT quantite FROM cart WHERE user_id = ? AND article_id = ?");
+    $stmt->execute([$_SESSION['id'], $articleId]);
+    $article = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($article) {
+        if ($article['quantite'] > 1) {
+            // Si plus d'une unité, on décrémente
+            $stmt = $db->prepare("UPDATE cart SET quantite = quantite - 1 WHERE user_id = ? AND article_id = ?");
+            $stmt->execute([$_SESSION['id'], $articleId]);
+        } else {
+            // Sinon, on supprime l'article du panier
+            $stmt = $db->prepare("DELETE FROM cart WHERE user_id = ? AND article_id = ?");
+            $stmt->execute([$_SESSION['id'], $articleId]);
+        }
+    }
 }
