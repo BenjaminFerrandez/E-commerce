@@ -40,7 +40,7 @@ $stmt->execute();
         <div class="CTANav">
 
             <ul>
-                <li><a href="">Creer un article</a></li>
+                <li><a href="create_product.php">Creer un article</a></li>
                 <li><a href="">Wishlist</a></li>
                 <li><a href="">Panier</a></li>
             </ul>
