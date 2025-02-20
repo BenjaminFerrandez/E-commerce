@@ -50,7 +50,7 @@ li:hover a {
 
 a {
     text-decoration: none;
-    color: #E3E3E3;
+    color: #f00606;
 }
 
 .title {
@@ -128,10 +128,6 @@ a {
 .landing {
     width: 100vw;
     height: 93vh;
-    background-color: red;
-}
-
-a {
     background-color: red;
 }
 

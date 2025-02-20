@@ -18,6 +18,10 @@ $db = $database->getConnection();
 $query = "SELECT * FROM article ORDER BY date_publication DESC";
 $stmt = $db->prepare($query);
 $stmt->execute();
+
+$query = "SELECT * FROM user";
+$request_user = $db->prepare($query);
+$request_user->execute();
 ?>
 
 <!DOCTYPE html>
@@ -45,18 +49,21 @@ $stmt->execute();
                 <li><a href="">Panier</a></li>
             </ul>
 
-            <?php
-                if (isset($_SESSION['id'])) {
-                    echo "<div class='userLog'>";
-                    echo "<div class='profilPic'></div>";
-                    echo "<p>" . $_SESSION['username'] . "</p>";
-                    echo "</div>";
-                } else {
-                    echo "<div class='user'>";
-                    echo "<p>LOGIN</p>";
-                    echo "</div>";
-                }
-            ?>
+                <?php
+                    $user = $request_user->fetch(PDO::FETCH_ASSOC);
+                    echo "<a href='profil.php?username=" . $user['username'] . "'>";
+                        if (isset($_SESSION['id'])) {
+                            echo "<div class='userLog'>";
+                            echo "<div class='profilPic'></div>";
+                            echo "<p>" . $_SESSION['username'] . "</p>";
+                            echo "</div>";
+                        } else {
+                            echo "<div class='user'>";
+                            echo "<p>LOGIN</p>";
+                            echo "</div>";
+                        }
+                    echo "</a>";
+                ?>
         </div>
     </nav>
 
