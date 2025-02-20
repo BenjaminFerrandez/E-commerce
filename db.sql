@@ -11,7 +11,7 @@ CREATE TABLE user (
 -- Table des articles
 CREATE TABLE article (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    created_by INT NOT NULL,
+    user_id INT NOT NULL,
     nom VARCHAR(100) NOT NULL,
     slug VARCHAR(100) NOT NULL UNIQUE,
     description TEXT,
