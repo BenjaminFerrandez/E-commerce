@@ -102,6 +102,8 @@ $request_user->execute();
 
     <h1>Articles en vente</h1>
 
+    <div class="landing">
+
     <div class="articles">
         <?php
 
@@ -149,6 +151,8 @@ $request_user->execute();
         }
         ?>
         
+    </div>
+
     </div>
 
 </body>

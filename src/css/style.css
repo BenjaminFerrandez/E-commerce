@@ -171,14 +171,18 @@ a {
     display: block;
 }
 
-
-
-
-
 .landing {
     width: 100vw;
-    height: 93vh;
     background-color: red;
+    display: flex;
+    justify-content: center;
+}
+
+.articles {
+    width: 50%;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    background-color: blue;
 }
 
 .article {
@@ -195,6 +199,7 @@ a {
 }
 
 .articleImage img {
+    border-radius: 8px;
 }
 
 .articleContent {
@@ -208,7 +213,7 @@ a {
     color: white;  /* Texte en blanc pour contraster */
     padding: 20px;  /* Ajoute un espace intérieur pour l'esthétique */
     margin: 10px 0;  /* Ajoute un espace entre chaque article */
-    border-radius: 10px;  /* Arrondit légèrement les bords */
+    border-radius: 8px;  /* Arrondit légèrement les bords */
     min-width: 500px;
     max-width: 500px;  /* Limite la taille max pour un bon affichage */
     height: 160px;
@@ -218,9 +223,10 @@ a {
 }
 
 .cartArticlePicture {
-    height: 150px;
-    width: 150px;
-    background-color: red;
+}
+
+.cartArticlePicture img {
+
 }
 
 .cartArticleDesc {

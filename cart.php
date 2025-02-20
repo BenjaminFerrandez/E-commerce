@@ -5,7 +5,7 @@ require_once 'functions.php';
 
 if (!isset($_SESSION['id'])) {
     echo "aaa";
-    //header('Location: index.php');
+    header('Location: index.php');
     exit();
 }
 
@@ -43,20 +43,6 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 $stmt = $db->prepare("SELECT * FROM article");
 $stmt->execute();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['addItem'])) {
-        if ($_POST['article_stock'] > $_POST["article_quantity"]) {
-            addItem($_POST['article_id']);
-            header('Location: /E-commerce/cart.php');
-        } else {
-            echo "pas assez de stocks";
-        }
-        
-    } elseif (isset($_POST['removeItem'])) {
-        removeItem($_POST['article_id']);
-        header('Location: /E-commerce/cart.php');
-    }
-}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['addItem'])) {
@@ -161,7 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         echo "<div class='cartArticle'>";
                         echo "<div class='cartArticlePicture'>";
-                        echo "<img src='" . htmlspecialchars($article['image_url']) . "' alt='" . htmlspecialchars($article['nom']) . "'>";
+                        echo "<img src='" . htmlspecialchars($article['image_url']) . "' alt='" . htmlspecialchars($article['nom']) . "'width='120'>";
                         echo "</div>";
                         echo "<div class='cartArticleDesc'>";
                         echo "<h2>" . htmlspecialchars($article['nom']) . "</h2>";
