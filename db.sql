@@ -11,7 +11,7 @@ CREATE TABLE user (
 -- Table des articles
 CREATE TABLE article (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    created_by INT NOT NULL,
+    user_id INT NOT NULL,
     nom VARCHAR(100) NOT NULL,
     slug VARCHAR(100) NOT NULL UNIQUE,
     description TEXT,
@@ -19,7 +19,7 @@ CREATE TABLE article (
     date_publication TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     prix DECIMAL(10,2) NOT NULL,
-    FOREIGN KEY (created_by) REFERENCES user(id)
+    FOREIGN KEY (user_id) REFERENCES user(id)
 );
 
 -- Table des stocks

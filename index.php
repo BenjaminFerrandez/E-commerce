@@ -56,11 +56,20 @@ $request_user->execute();
         <div class="CTANav">
 
             <ul>
-                <li><a href="create_product.php">Creer un article</a></li>
+                <?php
+                    if (isset($_SESSION['id'])) {
+                        echo "<li><a href='create_product.php?username=" . $_SESSION['username'] . "'>Creer un article</a></li>";
+                    }
+                ?>
                 <li><a href="">Wishlist</a></li>
                 <li><a href="cart.php">Panier</a></li>
             </ul>
 
+
+            
+
+
+            
                 <?php
                     $user = $request_user->fetch(PDO::FETCH_ASSOC);
                     echo "<a href='profil.php?username=" . $user['username'] . "'>";
