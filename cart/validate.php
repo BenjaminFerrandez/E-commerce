@@ -36,14 +36,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['validate'])) {
         $stmt->execute([$total, $userId]);
         
         // Enregistrer la commande
-        $stmt = $db->prepare("INSERT INTO orders (user_id, total, date) VALUES (?, ?, NOW())");
-        $stmt->execute([$userId, $total]);
-        $orderId = $db->lastInsertId();
+        $stmt = $db->prepare("INSERT INTO commandes (user_id, montant_total, adresse, ville, code_postal) VALUES (?, ?, ?, ?, ?)");
+        $stmt->execute([$userId, $total, $_POST['billing_address'], $_POST['billing_city'], $_POST['billing_cp']]);
+        $commandeId = $db->lastInsertId();        
         
         // Enregistrer les articles de la commande
         foreach ($cartItems as $item) {
-            $stmt = $db->prepare("INSERT INTO order_items (order_id, article_id, quantite, prix) VALUES (?, ?, ?, ?)");
-            $stmt->execute([$orderId, $item['article_id'], $item['quantite'], $item['prix']]);
+            $stmt = $db->prepare("INSERT INTO commande_articles (commande_id, article_id, quantite, prix_unitaire) VALUES (?, ?, ?, ?)");
+            $stmt->execute([$commandeId, $item['article_id'], $item['quantite'], $item['prix']]);
         }
         
         // Vider le panier
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['validate'])) {
         $stmt->execute([$userId]);
         
         // Redirection vers la page de confirmation
-        header('Location: /E-commerce/cart/success.php?order_id=' . $orderId);
+        header('Location: /E-commerce/cart/success.php?order_id=' . $commandeId);
         exit();
     } else {
         $error = "Solde insuffisant pour valider la commande.";
@@ -115,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['validate'])) {
         <input type="text" name="billing_city" required>
         <br>
         <label>Code Postal :</label>
-        <input type="text" name="billing_cp" required>
+        <input type="number" name="billing_cp" required>
         <br>
         <h2>Récapitulatif</h2>
         <ul>

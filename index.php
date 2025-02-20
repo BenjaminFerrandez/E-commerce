@@ -62,6 +62,14 @@ $stmt->execute();
                     echo "<div class='userLog'>";
                     echo "<div class='profilPic'></div>";
                     echo "<p>" . $_SESSION['username'] . "</p>";
+                    echo "<div class='userMenuHitbox'>";
+                    echo "<div class='userMenu'>";
+                    echo "<ul>";
+                    echo "<li><a href='profile.php'>Mon Profil</a></li>";
+                    echo "<li><a href='profile.php'>Déconnexion</a></li>";
+                    echo "</ul>";
+                    echo "</div>";
+                    echo "</div>";
                     echo "</div>";
                 } else {
                     echo "<div class='user'>";
