@@ -23,7 +23,7 @@
                 $_SESSION['id'] = $db->lastInsertId();
                 $_SESSION['username'] = $username;
                 $_SESSION['role'] = 'user';
-                header('Location: /index.php');
+                header('Location: index.php');
                 exit();
             }
         }

@@ -22,6 +22,43 @@ if (!$db) {
     die("La connexion à la base de données a échoué.");
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['changeNomArticle'])) {
+    echo "aaaa";
+    $stmt = $db->prepare("UPDATE article SET nom = ? WHERE id = ?");
+    echo "bbb";
+    $stmt->execute([$_POST['nom'], $_POST['article_id']]);
+
+    $slug = str_replace(" ", "_", strtolower($_POST['nom']));
+
+    $stmt = $db->prepare("UPDATE article SET slug = ? WHERE id = ?");
+    $stmt->execute([$slug, $_POST['article_id']]);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['changeDescriptionArticle'])) {
+    $stmt = $db->prepare("UPDATE article SET description = ? WHERE id = ?");
+    $stmt->execute([$_POST['description'], $_POST['article_id']]);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['changeImageArticle'])) {
+    $stmt = $db->prepare("UPDATE article SET image_url = ? WHERE id = ?");
+    $stmt->execute([$_POST['image'], $_POST['article_id']]);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['changePrixArticle'])) {
+    $stmt = $db->prepare("UPDATE article SET prix = ? WHERE id = ?");
+    $stmt->execute([$_POST['prix'], $_POST['article_id']]);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['changeQuantityArticle'])) {
+    if ((int)$_POST['quantite'] > 0) {
+        $stmt = $db->prepare("UPDATE article SET deleted = 0 WHERE id = ?");
+        $stmt->execute([$_POST['article_id']]);
+    }
+    $stmt = $db->prepare("UPDATE stock SET quantite = ? WHERE article_id = ?");
+    $stmt->execute([$_POST['quantite'], $_POST['article_id']]);
+    $commandeId = $db->lastInsertId();  
+}
+
 
     // Créer un nouvel article
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -46,8 +83,8 @@ if (!$db) {
                     $db->beginTransaction();
 
                     // Insérer l'article
-                    $stmt = $db->prepare("INSERT INTO article (nom, slug, description, image_url, prix) VALUES (?, ?, ?, ?, ?)");
-                    $stmt->execute([$nom, $slug, $description, $image_url, $prix]);
+                    $stmt = $db->prepare("INSERT INTO article (user_id, nom, slug, description, image_url, prix) VALUES (?, ?, ?, ?, ?, ?)");
+                    $stmt->execute([$_SESSION["id"], $nom, $slug, $description, $image_url, $prix]);
 
                     // Récupérer l'ID de l'article inséré
                     $article_id = $db->lastInsertId();
@@ -68,27 +105,13 @@ if (!$db) {
         }
 
         // Supprimer un article
-        if (isset($_GET['delete_id'])) {
-            $delete_id = intval($_GET['delete_id']);
-            try {
-                $db->beginTransaction();
-
-                // Supprimer l'article du stock
-                $stmt = $db->prepare("DELETE FROM stock WHERE article_id = ?");
-                $stmt->execute([$delete_id]);
-
-                // Supprimer l'article
-                $stmt = $db->prepare("DELETE FROM article WHERE id = ?");
-                $stmt->execute([$delete_id]);
-
-                // Commit de la transaction
-                $db->commit();
-                $success = "Article supprimé avec succès !";
-            } catch (Exception $e) {
-                // En cas d'erreur, annuler la transaction
-                $db->rollBack();
-                $error = "Erreur lors de la suppression de l'article : " . $e->getMessage();
-            }
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteArticle'])) {
+            $stmt = $db->prepare("UPDATE stock SET quantite = 0 WHERE article_id = ?");
+            $stmt->execute([$_POST['article_id']]); 
+        
+            $stmt = $db->prepare("UPDATE article SET deleted = 1 WHERE id = ?");
+            $stmt->execute([$_POST['article_id']]); 
         }
 
         // Modifier un article
@@ -125,8 +148,8 @@ if (!$db) {
 
 // Récupérer les articles existants
 
-$stmt = $db->prepare("SELECT * FROM article INNER JOIN user ON article.user_id = user.id WHERE user.username = ?");
-$stmt->execute([$_GET["username"]]);
+$stmt = $db->prepare("SELECT * FROM article INNER JOIN user ON article.user_id = user.id INNER JOIN stock ON article.id = stock.article_id WHERE user.username = ?");
+$stmt->execute([$_SESSION["username"]]);
 $articles = $stmt->fetchAll();
 ?>
 
@@ -173,36 +196,69 @@ $articles = $stmt->fetchAll();
         <table border="1">
             <thead>
                 <tr>
+                    <th>Id</th>
                     <th>Nom</th>
-                    <th>Description</th>
+                    <th>Descrition</th>
+                    <th>Image</th>
                     <th>Prix</th>
                     <th>Quantité</th>
-                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($articles as $article): ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($article['nom']); ?></td>
-                        <td><?php echo htmlspecialchars($article['description']); ?></td>
-                        <td><?php echo number_format($article['prix'], 2, ',', ' '); ?> €</td>
-                        <td>
-                            <?php
-                                // Récupérer la quantité depuis la table stock
-                                $stmt = $db->prepare("SELECT quantite FROM stock WHERE article_id = ?");
-                                $stmt->execute([$article['id']]);
-                                $stock = $stmt->fetch();
-                                echo $stock ? $stock['quantite'] : 0;
-                            ?>
-                        </td>
-                        <td>
-                            <!-- Modifier -->
-                            <a href="modify_product.php"<?php echo $article['id']; ?>">Modifier</a> |
-                            <!-- Supprimer -->
-                            <a href="?delete_id=<?php echo $article['id']; ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?')">Supprimer</a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
+            <?php foreach ($articles as $article): ?>
+            <tr>
+                <td><?= htmlspecialchars($article['id']) ?></td>
+                <td>
+                    <form method="post">
+                        <input type="hidden" name="article_id" value="<?= $article['id'] ?>">
+                        <input type="text" name="nom" value="<?= $article['nom']?>" min="0">
+                        <button type="submit" name="changeNomArticle">Modifier</button>
+                    </form>
+                </td>
+                <td>
+                    <form method="post">
+                        <input type="hidden" name="article_id" value="<?= $article['id'] ?>">
+                        <input type="text" name="description" value="<?= $article['description']?>" min="0">
+                        <button type="submit" name="changeDescriptionArticle">Modifier</button>
+                    </form>
+                </td>
+                <td>
+                    <form method="post">
+                        <input type="hidden" name="article_id" value="<?= $article['id'] ?>">
+                        <input type="text" name="image" value="<?= $article['image_url']?>" min="0">
+                        <button type="submit" name="changeImageArticle">Modifier</button>
+                    </form>
+                </td>
+                <td>
+                    <form method="post">
+                        <input type="hidden" name="article_id" value="<?= $article['id'] ?>">
+                        <input type="number" name="prix" value="<?= $article['prix']?>" min="0">
+                        <button type="submit" name="changePrixArticle">Modifier</button>
+                    </form>
+                </td>
+                <td>
+                    <form method="post">
+                        <input type="hidden" name="article_id" value="<?= $article['id'] ?>">
+                        <input type="number" name="quantite" value="<?= $article['quantite']?>" min="0">
+                        <button type="submit" name="changeQuantityArticle">Modifier</button>
+                    </form>
+                </td>
+                <td>
+                    <?php
+                        if ($article['deleted'] == 0) {
+                            echo "<p>Disponible</p>";
+                        } else {
+                            echo "<p>Supprimé</p>";
+                        }?>
+                </td>
+                <td>
+                    <form method="post">
+                        <input type="hidden" name="article_id" value="<?= $article['id'] ?>">
+                        <button type="submit" name="deleteArticle">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+        <?php endforeach; ?>
             </tbody>
         </table>
 
