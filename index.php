@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Afficher les articles
-$query = "SELECT * FROM article WHERE deleted = 0 ORDER BY date_publication DESC";
+$query = "SELECT * FROM article ORDER BY date_publication DESC";
 $stmt = $db->prepare($query);
 $stmt->execute();
 
