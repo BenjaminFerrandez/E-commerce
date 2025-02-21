@@ -12,13 +12,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addToCart'])) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['addItem'])) {
-        addItem($_POST['article_id']);
-        header('Location: /E-commerce/index.php');
-        exit();
+        if ($_POST['article_stock'] > $_POST["article_quantity"]) {
+            addItem($_POST['article_id']);
+            header('Location: /E-commerce/cart.php');
+        } else {
+            echo "pas assez de stocks";
+        }
+        
     } elseif (isset($_POST['removeItem'])) {
         removeItem($_POST['article_id']);
-        header('Location: /E-commerce/index.php');
-        exit();
+        header('Location: /E-commerce/cart.php');
     }
 }
 
