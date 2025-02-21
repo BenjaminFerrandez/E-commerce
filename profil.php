@@ -93,6 +93,6 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         </div>
     <?php endif; ?>
 
-    <a href="index.php">Retour à l'accueil</a>
+    <a href="index.php">Retour à l'accueil</a> <a href="edit_profil.php">Modifier le profil</a>
 </body>
 </html>
