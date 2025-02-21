@@ -1,5 +1,7 @@
 Projet E-commerce
 
+https://github.com/BenjaminFerrandez/E-commerce.git
+
 Ce projet est une plateforme e-commerce permettant aux utilisateurs d'acheter et de vendre des articles, de gérer un panier et de passer des commandes. Une interface administrateur permet la gestion des utilisateurs et des articles.
 
 Prérequis
