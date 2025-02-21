@@ -196,8 +196,9 @@ $articles = $stmt->fetchAll();
                         ?>
                     </td>
                     <td>
-                        <a href="modify_product.php?id=<?= $article['id']; ?>">Modifier</a> |
-                        <a href="?delete_id=<?= $article['id']; ?>" onclick="return confirm('Êtes-vous sûr ?')">Supprimer</a>
+                    <a href="modify_product.php?id=<?php echo $article['id']; ?>">Modifier</a>
+
+                     <a href="?delete_id=<?= $article['id']; ?>" onclick="return confirm('Êtes-vous sûr ?')">Supprimer</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
