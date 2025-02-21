@@ -195,9 +195,6 @@ a {
     min-width: 200px;
 }
 
-.articleImage {
-}
-
 .articleImage img {
     border-radius: 8px;
 }
@@ -209,36 +206,23 @@ a {
 }
 
 .cartArticle {
-    background-color: black;  /* Fond noir */
-    color: white;  /* Texte en blanc pour contraster */
-    padding: 20px;  /* Ajoute un espace intérieur pour l'esthétique */
-    margin: 10px 0;  /* Ajoute un espace entre chaque article */
-    border-radius: 8px;  /* Arrondit légèrement les bords */
+    background-color: black;
+    color: white;
+    padding: 20px;
+    margin: 10px 0;
+    border-radius: 8px;
     min-width: 500px;
-    max-width: 500px;  /* Limite la taille max pour un bon affichage */
+    max-width: 500px;
     height: 160px;
     display: flex;
     align-items: center;
     gap: 25px;
 }
 
-.cartArticlePicture {
-}
-
-.cartArticlePicture img {
-
-}
-
-.cartArticleDesc {
-    
-}
-
-
 .cartLanding {
     display: flex;
     justify-content: center;
 }
-
 
 .wrap {
     width: auto;
@@ -247,8 +231,6 @@ a {
     flex-direction: column;
     justify-content: space-between;
 }
-
-
 
 .adminUserCard {
     background-color: rgb(93, 93, 93);

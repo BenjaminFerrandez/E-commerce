@@ -32,8 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header('Location: index.php');
         } else {
             echo "pas assez de stocks";
-        }
-        
+        } 
     } elseif (isset($_POST['removeItem'])) {
         removeItem($_POST['article_id']);
         header('Location: index.php');
@@ -72,7 +71,6 @@ if ($userLoggedIn) {
         <div class="searchBar">
             <input type="search" name="search" id="search" placeholder="Search for article">
         </div>
-
         <div class="CTANav">
             <ul>
                 <?php if ($userLoggedIn) : ?>
@@ -81,7 +79,6 @@ if ($userLoggedIn) {
                 <li><a href="#">Wishlist</a></li>
                 <li><a href="cart.php">Panier</a></li>
             </ul>
-
             <?php if ($userLoggedIn) : ?>
                 <div class='userLog'>
                     <div class='profilPic'></div>

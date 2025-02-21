@@ -28,7 +28,7 @@ foreach ($cartItems as $item) {
     $total += $item['prix'] * $item['quantite'];
 }
 
-// Traitement de la validation du panier
+// Validation du panier
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['validate'])) {
     if ($solde >= $total) {
         // Déduire le montant du solde

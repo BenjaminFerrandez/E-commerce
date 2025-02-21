@@ -22,7 +22,6 @@ if (!$db) {
     die("La connexion à la base de données a échoué.");
 }
 
-
     // Créer un nouvel article
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_POST['create_article'])) {
@@ -90,7 +89,6 @@ if (!$db) {
                 $error = "Erreur lors de la suppression de l'article : " . $e->getMessage();
             }
         }
-
         // Modifier un article
         if (isset($_POST['edit_article'])) {
             $edit_id = intval($_POST['edit_id']);
@@ -124,7 +122,6 @@ if (!$db) {
     }
 
 // Récupérer les articles existants
-
 $stmt = $db->prepare("SELECT * FROM article INNER JOIN user ON article.user_id = user.id WHERE user.username = ?");
 $stmt->execute([$_GET["username"]]);
 $articles = $stmt->fetchAll();
@@ -138,7 +135,6 @@ $articles = $stmt->fetchAll();
     <title>Créer un Article</title>
 </head>
 <body>
-
     <!-- Affichage des messages d'erreur et de succès -->
     <?php
         if ($error) {
@@ -148,7 +144,6 @@ $articles = $stmt->fetchAll();
             echo "<p style='color:green;'>$success</p>";
         }
     ?>
-
     <h1>Créer un Article</h1>
     <form method="POST">
         <label for="nom">Nom de l'article :</label>
@@ -168,7 +163,6 @@ $articles = $stmt->fetchAll();
 
         <button type="submit" name="create_article">Créer l'article</button>
     </form>
-
         <h1>Vos articles</h1>
         <table border="1">
             <thead>
@@ -205,11 +199,8 @@ $articles = $stmt->fetchAll();
                 <?php endforeach; ?>
             </tbody>
         </table>
-
-    
     <a href="index.php">
         <button type="button">Retour à l'Accueil</button>
     </a>
-
 </body>
 </html>

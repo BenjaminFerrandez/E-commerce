@@ -20,7 +20,7 @@ CREATE TABLE article (
     date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     prix DECIMAL(10,2) NOT NULL,
     deleted BOOLEAN NOT NULL DEFAULT 0,
-    FOREIGN KEY (created_by) REFERENCES user(id)
+    FOREIGN KEY (user_id) REFERENCES user(id)
 );
 
 -- Table des stocks

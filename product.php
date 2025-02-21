@@ -15,7 +15,7 @@ $database = new Database();
 $db = $database->getConnection();
 
 // Préparer et exécuter la requête pour récupérer les détails de l'article + le nom de l'utilisateur
-$query = "SELECT article.*, user.username FROM article INNER JOIN user ON article.user_id = user.id WHERE article.slug = :slug";
+$query = "SELECT article.*, user.username, stock.quantite FROM article INNER JOIN user ON article.user_id = user.id LEFT JOIN stock ON stock.article_id = article.id WHERE article.slug = :slug";
 $stmt = $db->prepare($query);
 $stmt->bindParam(':slug', $article_slug, PDO::PARAM_STR);
 $stmt->execute();
@@ -38,7 +38,6 @@ $article = $stmt->fetch(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="src/css/style.css">
 </head>
 <body>
-
     <h1><?= htmlspecialchars($article['nom']) ?></h1>
     <img src="<?= htmlspecialchars($article['image_url']) ?>" alt="<?= htmlspecialchars($article['nom']) ?>" width="300">
     <p><strong>Description :</strong> <?= htmlspecialchars($article['description']) ?></p>
@@ -48,6 +47,7 @@ $article = $stmt->fetch(PDO::FETCH_ASSOC);
             <?= htmlspecialchars($article['username']) ?>
         </a>
     </p>
+    <p><strong>Stock :</strong> <?= htmlspecialchars($article['quantite']) ?></p>
     <p><strong>Prix :</strong> <?= htmlspecialchars($article['prix'])?> €</p>
     <a href="index.php">Retour à l'accueil</a>
 </body>
