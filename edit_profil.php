@@ -69,7 +69,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="src/css/style.css">
 </head>
 <body>
-
     <h1>Modifier mon profil</h1>
 
     <?php if (!empty($error_message)) : ?>
@@ -91,6 +90,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
 
     <a href="profil.php?username=<?= urlencode($_SESSION['username']) ?>">Retour au profil</a>
-
 </body>
 </html>

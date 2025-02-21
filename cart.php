@@ -1,5 +1,4 @@
 <?php
-
 require_once 'config/database.php';
 require_once 'functions.php';
 
@@ -15,14 +14,11 @@ $db = $database->getConnection();
 $username = $_SESSION['username'];
 $userId = $_SESSION['id'];
 
-
 // Join user et cart
 $query = "SELECT * FROM user INNER JOIN cart ON user.id = cart.user_id WHERE cart.user_id = ?";
 $userRequest = $db->prepare($query);
 $userRequest->execute([$userId]);
 $user = $userRequest->fetch(PDO::FETCH_ASSOC);
-
-
 
 // Join article cart
 $query = "SELECT * FROM article INNER JOIN cart ON article.id = cart.article_id WHERE cart.user_id = ?";
@@ -39,10 +35,8 @@ $stmt = $db->prepare("SELECT solde FROM user WHERE username = ?");
 $stmt->execute([$username]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-
 $stmt = $db->prepare("SELECT * FROM article");
 $stmt->execute();
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['addItem'])) {
@@ -52,7 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             echo "pas assez de stocks";
         }
-        
     } elseif (isset($_POST['removeItem'])) {
         removeItem($_POST['article_id']);
         header('Location: /E-commerce/cart.php');
@@ -69,7 +62,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="src/css/style.css">
 </head>
 <body>
-
     <nav>
         <div class="title">
             <a href="index.php"><h1>PHONE</h1></a>
@@ -85,7 +77,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <li><a href="">Wishlist</a></li>
                 <li><a href="cart.php">Panier</a></li>
             </ul>
-
             <?php
                 if (isset($_SESSION['id'])) {
                     echo "<div class='userLog'>";
@@ -99,22 +90,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             ?>
         </div>
-
     </nav>
-
     <h2>PANIER</h2>
-
     <div class="cartLanding">
-
         <div class="wrap">
-
             <?php
-
-
                 $stmt = $db->prepare("SELECT solde FROM user WHERE username = ?");
                 $stmt->execute([$username]);
                 $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
 
                 $query = "SELECT article.*, stock.quantite 
                 FROM cart
@@ -134,17 +117,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 if (count($articles) > 0) {
                     foreach ($articles as $article) {
-
                         $cartIds = array_column($cartItems, 'article_id');
 
                         if (in_array($article["id"], $cartIds)) {
                             $articleIndex = array_search($article["id"], $cartIds);
                             $articleQuantity = $cartItems[$articleIndex]['quantite'];
                         }
-
                         $sub_total = $articleQuantity * $article['prix'];
                         echo $sub_total;
-
                         echo "<div class='cartArticle'>";
                         echo "<div class='cartArticlePicture'>";
                         echo "<img src='" . htmlspecialchars($article['image_url']) . "' alt='" . htmlspecialchars($article['nom']) . "'width='120'>";
@@ -168,15 +148,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } else {
                     echo "<p>Votre panier est vide.</p>";
                 }
-
             ?>
-
         </div>
-
     </div>
-
     <a href="cart/validate.php" style="display: flex"><p>valider le panier</p></a>
-    
-    
 </body>
 </html>

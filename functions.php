@@ -52,7 +52,6 @@ function addItem($articleId) {
     $stmt->execute([$_SESSION['id'], $articleId]);
     $article = $stmt->fetch(PDO::FETCH_ASSOC);
 
-
     if ($article) {
         $stmt = $db->prepare("UPDATE cart SET quantite = quantite + 1 WHERE user_id = ? AND article_id = ?");
         $stmt->execute([$_SESSION['id'], $articleId]);

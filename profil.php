@@ -69,9 +69,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     <link rel="stylesheet" href="src/css/style.css">
 </head>
 <body>
-
     <h1>Profil de <?= htmlspecialchars($user_data['username']) ?></h1>
-    
     <?php if ($_SESSION['username'] == $user_data['username']) : ?>
     <p><strong>Solde :</strong> <?= htmlspecialchars($user_data['solde']) ?> €</p>
     <?php endif; ?>
@@ -93,6 +91,8 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         </div>
     <?php endif; ?>
 
-    <a href="index.php">Retour à l'accueil</a> <a href="edit_profil.php">Modifier le profil</a>
+    <a href="index.php">Retour à l'accueil</a> <?php if ($_SESSION['username'] == $user_data['username']) : ?>
+                                                    <a href="edit_profil.php">Modifier le profil</a>
+                                                <?php endif; ?>
 </body>
 </html>

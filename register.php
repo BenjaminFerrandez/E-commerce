@@ -63,7 +63,6 @@
 ?>
 
 <h2>Register</h2>
-
 <form method="POST">
     <input type="text" name="username" required placeholder="Username">
     <input type="password" name="password" required placeholder="Password">

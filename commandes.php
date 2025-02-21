@@ -11,7 +11,6 @@ $commands = $commandQuery->fetchAll(PDO::FETCH_ASSOC);
 
 var_dump($commands);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,9 +20,7 @@ var_dump($commands);
 </head>
 <body>
     commandes
-
     <?php 
-
     if (count($commands) > 0) {
         foreach ($commands as $command) {
             echo "<p>Commande</p>";
@@ -31,6 +28,5 @@ var_dump($commands);
         }
     }
     ?>
-
 </body>
 </html>

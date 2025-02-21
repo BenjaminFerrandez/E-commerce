@@ -64,10 +64,6 @@ $articleQuery = $db->prepare("SELECT article.*, stock.quantite FROM article LEFT
 $articleQuery->execute();
 $articles = $articleQuery->fetchAll(PDO::FETCH_ASSOC);
 
-
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang="fr">
