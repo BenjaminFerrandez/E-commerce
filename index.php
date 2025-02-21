@@ -129,6 +129,8 @@ if ($userLoggedIn) {
                             ?>
                                 <form method="post">
                                     <input type='hidden' name='article_id' value='<?= $article["id"] ?>'>
+                                    <input type='hidden' name='article_stock' value='<?= $article["stock"] ?>'>
+                                    <input type='hidden' name='article_quantity' value='<?= $article["quantite"] ?>'>
                                     <input type='submit' name='removeItem' value='-'>
                                     <span><?= $articleQuantity ?></span>
                                     <input type='submit' name='addItem' value='+'>

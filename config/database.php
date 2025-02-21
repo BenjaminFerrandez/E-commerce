@@ -3,7 +3,7 @@ class Database {
     private $host = "localhost";
     private $db_name = "php_exam_telephone";
     private $username = "root";
-    private $password = "root";
+    private $password = "";
     public $conn;
 
     public function getConnection() {
